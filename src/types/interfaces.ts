@@ -1,5 +1,4 @@
-export class CreateCardDto {
-  // Name of the cardholder
+export interface cardholderard {
   name: string;
 
   // id of the account owner
@@ -37,4 +36,8 @@ export class CreateCardDto {
   nickName: string;
 
   note: string;
+}
+export interface CypheredCard {
+  cypheredPayload: string;
+  service: string;
 }

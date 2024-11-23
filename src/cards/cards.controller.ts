@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CardsService } from './cards.service';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
+import { CreateCardCypheredDto } from './dto/create-card-cyphered.dto';
 
 @Controller('cards')
 export class CardsController {
@@ -10,6 +11,11 @@ export class CardsController {
   @Post()
   create(@Body() createCardDto: CreateCardDto) {
     return this.cardsService.create(createCardDto);
+  }
+
+  @Post('/cypher')
+  createCypher(@Body() createCardCypheredDto: CreateCardCypheredDto) {
+    return this.cardsService.createCypher(createCardCypheredDto);
   }
 
   @Get()
