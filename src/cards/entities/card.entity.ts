@@ -39,5 +39,8 @@ export class Card {
   nickName: string;
 
   @Column()
+  preference: string;
+
+  @Column()
   note: string;
 }

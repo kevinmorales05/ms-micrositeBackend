@@ -39,6 +39,20 @@ export class CardsService {
 
     //tokenize the card number
 
+    //find other card with the preference = 1 and update
+    const changePreference = await this.cardRepository.findOneBy({
+      preference: '1',
+      userId: decriptedData.userId,
+    });
+    if (changePreference !== null) {
+      console.log('Found another prefered card');
+      changePreference.preference = '0';
+      await this.cardRepository.save(changePreference);
+    } else {
+      console.log('no previous cards!');
+    }
+    //update the status of the last card to 0, it means it is not prefered
+
     //create the card
     const newCard = new Card();
     //add the information to the card
@@ -54,6 +68,7 @@ export class CardsService {
     newCard.state = decriptedData.state;
     newCard.userId = decriptedData.userId;
     newCard.zipcode = decriptedData.zipcode;
+    newCard.preference = '1'; //it is the prefered by default
     console.log('new card ', newCard);
     //persist the card in the database
     try {
@@ -107,8 +122,43 @@ export class CardsService {
     //   error: `Error decripting information`,
     // };
   }
+  async updateCardPreference(id: string, cypheredCard: string) {
+    console.log('start change preference!');
+    try {
+      const updateToFind = await this.cardRepository.findOneBy({ id });
+      if (updateToFind !== null) {
+        const changePreference = await this.cardRepository.findOneBy({
+          preference: '1',
+        });
+        //update the status of the last card to 0, it means it is not prefered
+        changePreference.preference = '0';
+        await this.cardRepository.save(changePreference);
+        //update the status of the update card to 1, it means it is prefered
+        updateToFind.preference = '1';
+        await this.cardRepository.save(updateToFind);
+        return {
+          service: 'updateCard',
+          cypheredResponse: encrypt('Card updated successfully', secretKey),
+        };
+      } else {
+        return {
+          service: 'updateCard',
+          error: encrypt('Card not found!', secretKey),
+        };
+      }
+    } catch (error) {
+      console.log('Update error ', error);
+      return {
+        service: 'updateCard',
+        error: `Error decripting information: ${error}`,
+      };
+    }
+
+    return `This action updates a #${id} card`;
+  }
 
   create(createCardDto: CreateCardDto) {
+    console.log(createCardDto);
     return 'This action adds a new card';
   }
   findAll() {
@@ -117,10 +167,6 @@ export class CardsService {
 
   findOne(id: number) {
     return `This action returns a #${id} card`;
-  }
-
-  update(id: number, updateCardDto: UpdateCardDto) {
-    return `This action updates a #${id} card`;
   }
 
   async remove(id: string): Promise<addCardResponse> {

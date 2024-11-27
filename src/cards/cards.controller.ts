@@ -33,8 +33,8 @@ export class CardsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCardDto: UpdateCardDto) {
-    return this.cardsService.update(+id, updateCardDto);
+  update(@Param('id') id: string, @Body() updateCardDto: string) {
+    return this.cardsService.updateCardPreference(id, updateCardDto);
   }
 
   @Delete(':cardId')
