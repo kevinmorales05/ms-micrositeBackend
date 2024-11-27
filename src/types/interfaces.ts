@@ -1,4 +1,4 @@
-export interface cardholderard {
+export interface cardholdercard {
   name: string;
 
   // id of the account owner
