@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CardsService } from './cards.service';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
@@ -8,19 +16,14 @@ import { CreateCardCypheredDto } from './dto/create-card-cyphered.dto';
 export class CardsController {
   constructor(private readonly cardsService: CardsService) {}
 
-  @Post()
-  create(@Body() createCardDto: CreateCardDto) {
-    return this.cardsService.create(createCardDto);
-  }
-
   @Post('/cypher')
   createCypher(@Body() createCardCypheredDto: CreateCardCypheredDto) {
     return this.cardsService.createCypher(createCardCypheredDto);
   }
 
   @Get()
-  findAll() {
-    return this.cardsService.findAll();
+  findAll(@Param('userId') userId: string) {
+    return this.cardsService.findAllUserCards(userId);
   }
 
   @Get(':id')
@@ -33,8 +36,13 @@ export class CardsController {
     return this.cardsService.update(+id, updateCardDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cardsService.remove(+id);
+  @Delete(':cardId')
+  remove(@Param('cardId') cardId: string) {
+    console.log('start delete');
+    return this.cardsService.remove(cardId);
+  }
+  @Post()
+  create(@Body() createCardDto: CreateCardDto) {
+    return this.cardsService.create(createCardDto);
   }
 }

@@ -57,7 +57,7 @@ export class CardsService {
     console.log('new card ', newCard);
     //persist the card in the database
     try {
-      await this.cardRepository.save(newCard);
+      const cardAdded = await this.cardRepository.save(newCard);
       //cypher the response again
       const succefullResponse = {
         message: 'Card created successfully!',
@@ -67,8 +67,10 @@ export class CardsService {
           cardType: newCard.cardType,
           cardName: newCard.cardName,
           cardLast4Digits: newCard.last4digits,
+          id: cardAdded.id,
         },
       };
+      console.log('successResponse ', succefullResponse);
       //return a succesful message
       return {
         service: 'addCard',
@@ -101,11 +103,44 @@ export class CardsService {
     return `This action returns a #${id} card`;
   }
 
+  async findAllUserCards(userId: string): Promise<addCardResponse> {
+    const cardsByUserId = await this.cardRepository.find();
+
+    return {
+      service: 'addCard',
+      error: encrypt(cardsByUserId, secretKey),
+    };
+    // return {
+    //   service: 'addCard',
+    //   error: `Error decripting information`,
+    // };
+  }
+
   update(id: number, updateCardDto: UpdateCardDto) {
     return `This action updates a #${id} card`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} card`;
+  async remove(id: string): Promise<addCardResponse> {
+    try {
+      const removeToFind = await this.cardRepository.findOneBy({ id });
+      if (removeToFind !== null) {
+        await this.cardRepository.remove(removeToFind);
+        return {
+          service: 'removeCard',
+          cypheredResponse: encrypt('Card deleted successfully', secretKey),
+        };
+      } else {
+        return {
+          service: 'removeCard',
+          error: encrypt('Object not found!', secretKey),
+        };
+      }
+    } catch (error) {
+      console.log('Delete error ', error);
+      return {
+        service: 'removeCard',
+        error: `Error decripting information: ${error}`,
+      };
+    }
   }
 }
