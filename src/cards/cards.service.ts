@@ -5,7 +5,6 @@ import { CreateCardCypheredDto } from './dto/create-card-cyphered.dto';
 import { Card } from './entities/card.entity';
 import { decrypt } from 'src/utils/cypher';
 
-
 @Injectable()
 export class CardsService {
   create(createCardDto: CreateCardDto) {
@@ -13,12 +12,16 @@ export class CardsService {
   }
 
   createCypher(createCardDto: CreateCardCypheredDto) {
+    console.log('received cyphered: ', createCardDto);
     console.log('received cyphered service: ', createCardDto.service);
     console.log('received cyphered token: ', createCardDto.cypheredPayload);
 
-    const data = decrypt(createCardDto.cypheredPayload, 'key-decrypt');
-    //valide structure of json received
-
+    //decypher data
+    const decriptedData = decrypt(
+      createCardDto.cypheredPayload,
+      'mySecretKey12345',
+    );
+    //console.log('decripted data> ', decriptedData);
     //determine  the type of the card
 
     //validate if the data is correct in visa
@@ -26,7 +29,7 @@ export class CardsService {
     //tokenize the card number
 
     //create the card
-    const newCard = new Card();
+    //const newCard = new Card();
 
     //add the information to the card
 
