@@ -92,6 +92,22 @@ export class CardsService {
     //   cypheredCard: decriptedData,
     // };
   }
+
+  async findAllUserCards(userId: string): Promise<addCardResponse> {
+    //get all the cards
+    console.log('userid ', userId);
+    const cardsByUserId = await this.cardRepository.findBy({ userId });
+    console.log('all the cards found! ', cardsByUserId);
+    return {
+      service: 'addCard',
+      error: encrypt(cardsByUserId, secretKey),
+    };
+    // return {
+    //   service: 'addCard',
+    //   error: `Error decripting information`,
+    // };
+  }
+
   create(createCardDto: CreateCardDto) {
     return 'This action adds a new card';
   }
@@ -101,19 +117,6 @@ export class CardsService {
 
   findOne(id: number) {
     return `This action returns a #${id} card`;
-  }
-
-  async findAllUserCards(userId: string): Promise<addCardResponse> {
-    const cardsByUserId = await this.cardRepository.find();
-
-    return {
-      service: 'addCard',
-      error: encrypt(cardsByUserId, secretKey),
-    };
-    // return {
-    //   service: 'addCard',
-    //   error: `Error decripting information`,
-    // };
   }
 
   update(id: number, updateCardDto: UpdateCardDto) {

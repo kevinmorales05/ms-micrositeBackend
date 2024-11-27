@@ -21,8 +21,9 @@ export class CardsController {
     return this.cardsService.createCypher(createCardCypheredDto);
   }
 
-  @Get()
+  @Get(':userId')
   findAll(@Param('userId') userId: string) {
+    console.log('Get all cards! ', userId);
     return this.cardsService.findAllUserCards(userId);
   }
 
