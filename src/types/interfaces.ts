@@ -41,3 +41,14 @@ export interface CypheredCard {
   cypheredPayload: string;
   service: string;
 }
+// Generate link
+export interface Item {
+  name: string;
+  productDescription: string;
+  productSKU: string;
+  unitaryCost: number;
+  taxesPercentage: number;
+  quantity: number;
+  subtotal: number;
+  total: number;
+}
