@@ -75,8 +75,20 @@ export class DynamicUrlService {
     return `This action returns all dynamicUrl`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} dynamicUrl`;
+  async findOne(id: string) {
+    const tokenToFind = await this.dynamicUrl.findOneBy({ id });
+    if (tokenToFind !== null) {
+      console.log('Purchase token ', tokenToFind.purchaseToken);
+      console.log('Purchase ', tokenToFind);
+      return {
+        message: 'Token obtained successfully',
+        token: tokenToFind.purchaseToken,
+      };
+    }
+    return {
+      message: 'Token not found!',
+      token: null,
+    };
   }
 
   update(id: number, updateDynamicUrlDto: UpdateDynamicUrlDto) {

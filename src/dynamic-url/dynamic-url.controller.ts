@@ -27,7 +27,7 @@ export class DynamicUrlController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.dynamicUrlService.findOne(+id);
+    return this.dynamicUrlService.findOne(id);
   }
 
   @Patch(':id')
