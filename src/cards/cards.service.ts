@@ -92,7 +92,7 @@ export class CardsService {
         cypheredResponse: encrypt(succefullResponse, secretKey),
       };
     } catch (error) {
-      console.log('error saving the user ', error);
+      console.log('error saving the card ', error);
       //return error message if it is an error
       return {
         service: 'addCard',

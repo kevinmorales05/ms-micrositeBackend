@@ -25,7 +25,7 @@ This software is dynamic. It has the following features:
 * Update the prefered card
 
 
-[Software Demo Video](http://youtube.link.goes.here)
+[Software Demo Video](https://youtu.be/T3mZdP_HSwU)
 
 ## Development Environment
 

@@ -66,7 +66,7 @@ export class DynamicUrlService {
     //return the url
 
     return {
-      redirect: `http://localhost:3000/detail/${id}`,
+      redirect: `http://localhost:3001/detail/${id}`,
       message: 'Purchase generated successfully',
     };
   }
